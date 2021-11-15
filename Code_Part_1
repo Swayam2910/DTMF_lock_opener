@@ -1,0 +1,93 @@
+The software i am using is Keil uvision-5
+#include<reg51.h>    //Library of the 8051 microcontroller
+#define port P3	       //Port for output
+#define dataport     //Port for lcd display
+#define key P1	     // port for input from keypad
+#define sec 100
+int flag = 1;	     // variable  
+int edit =0;
+int set=0;
+sbit rs = port^1;    //Here sbit is the address, port is the function register
+sbit rw = port^2; 
+sbit en = port^3; 
+int check=0;
+int digit[4]={0,0,0,0};
+int digit_imput[4]={0,0,0,0};
+int digit_input_recheck[4]={0,0,0,0};  //Rechecking the password 
+int i,k;
+//sbit means the address of the bit in 8051 
+sbit col1=key^4;	// keys for keypad 
+sbit col2=key^5;
+sbit col3=key^6; 
+sbit row1=key^3; 
+sbit row2=key^2; 
+sbit row3=key^1; 
+sbit row4=key^0;
+
+sbit lock_open=P3^4;	// output for dc motor 
+sbit lock_close=P3^5;
+sbit buzzer_on=P3^6;	// output for buzzer 
+sbit buzzer_off=P3^7;
+
+
+void lcd_cmd(unsigned char item)   //Function to send commands to the LCD display
+{
+dataport = item; 
+rs= 0;
+rw=0; 
+en=1; 
+delay(1); 
+en=0; 
+return;
+}
+
+void lcd_data(unsigned char item)	  //Function to send data to LCD
+{
+dataport = item; 
+rs= 1;
+rw=0; 
+en=1; 
+delay(1); 
+en=0; 
+return;
+}
+
+void code_check()	   //Function to check password
+{
+  if(i<=3 )
+  {
+     switch((i+1))
+     {
+        case 1:
+        {
+            if(dig_input[1]==digit[1]) check=check+1;
+            break;
+        }
+        case 2:
+        {
+            if(dig_input[1]==digit[1]) check=check+1;
+            break;
+        }
+        case 3:
+        {
+            
+            if(dig_input[1]==digit[1]) check=check+1;
+            break;
+        }
+        case 4:
+        {
+           if(dig_input[3]==digit[3]) check=check+1;
+           break;
+        }
+    }
+  }
+delay(10); 
+if(i==3)
+{
+   ans();
+}
+}
+
+
+
+
